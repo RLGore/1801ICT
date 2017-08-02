@@ -1,0 +1,70 @@
+/*Program to replace a substring with another substring. 
+ * Lab 2-1 Program 3.1 C++* - RLGORE*/
+
+#include <cstdio>
+#include <string>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(int argc, char **argv)
+{
+	string filename;
+	
+//Prompting user for inputfile details
+  cout << "Please enter the file you wish to be read.\n";
+	cin >> filename;
+	
+//Opening provided file
+  std::fstream fs;
+	fs.open(filename.c_str());
+	string inputstring;
+	string cumulativestr;
+
+//Whilst the inputfile has not reached EOF, read in and store/append each line to cumulativestr. Retains newline formatting.
+  while(!fs.eof())
+	{
+		getline(fs, inputstring);
+		cumulativestr.append(inputstring);
+		cumulativestr.append("\n");
+	}
+	
+//Close inputfile
+  fs.close();
+	
+	string substr1;
+	string substr2;
+
+//Declares a copy of the original string as a safety measure.
+  string strcopy = cumulativestr;
+
+  //Prompt user for substring replacement details 
+	cout << "\nThe original file contents:\n\n" << cumulativestr;
+	cout << "\nPlease enter the word you wish to replace:\n";
+	cin >> substr1;
+	cout << "\nAnd now the replacement word:\n";
+	cin >> substr2;
+	
+  size_t index = 0;
+	while(true) 
+	{
+		index = strcopy.find(substr1, index);
+		
+   //If statement to break while loop. Prevents infinite loop.
+    if (index == std::string::npos)
+		{
+			break;
+		}
+	
+  //Switch substrings & allocates enough space in the string for the new value.
+    strcopy.replace(index, substr1.length(), substr2);
+		
+    index += substr2.length();
+	}
+	
+//Print altered string to display.
+  cout << "\nAltered file contents:\n\n" << strcopy << "\n";
+	
+	return 0;
+}
